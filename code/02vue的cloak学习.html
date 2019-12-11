@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 导入vue.js -->
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head> 
+                                                     
+<body>
+    <div id="app">
+        <p v-cloak>+++++++{{msg}}--------</p>
+        <!-- 没有闪烁问题 -->
+        <h4 v-text="msg">==========</h4>
+        <div>{{msg1}}</div>
+        <div v-text="msg1"></div>
+        <div v-html="msg1"></div>
+        <input type="button" value="按钮1"  v-bind:title="mytitle">
+        <!-- v-bind缩写是 : -->
+        <input type="button" value="按钮2"  :title="mytitle +'12321'">
+        <!-- v-on缩写是@ -->
+        <input type="button" value="按钮3" v-on:click="show">
+        <input type="button" value="按钮4" @click="show">
+
+    </div>
+    
+    <script src="./lib/vue.js"></script>
+    <script>
+        var vm=new Vue({
+            el: '#app',
+            data: {
+                msg: '欢迎学习vue',
+                msg1: '<h1>老子天下无敌！！！！</h1>',
+                mytitle: '这是我自己的title！！！'
+            },
+            methods: {
+                show: function (){
+                    alert("老子天下无敌");
+                }
+
+            }
+        })
+    </script>
+</body>
+</html>

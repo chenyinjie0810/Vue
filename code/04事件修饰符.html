@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>事件修饰符</title>
+    <script src="./lib/vue.js"></script>
+    <style>
+        .inner {
+            height: 150px;
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="inner" @click="divHandler">
+            <!-- .stop 阻止冒泡 -->
+            <input type="button" value="戳他" @click.stop="btnHandler">
+        </div>
+        <!-- .prevent 阻止默认行为 -->
+        <a href="http://www.baidu.com" @click.prevent="baidu">有问题去百度！</a>
+        <!-- .capture 实现捕获触发事件的机制 -->
+        <div class="inner" @click.capture="divHandler">
+            <input type="button" value="戳他" @click="btnHandler">
+        </div>
+        <br><br>
+        <!-- .self 只有在触发该元素本身才能触发回调 -->
+        <div class="inner" @click.self="divHandler">
+                <input type="button" value="戳他" @click="btnHandler">
+        </div>
+        <!-- .once 仅一次生效 -->
+        <a href="http://www.baidu.com" @click.once.prevent='btnHandler'>百度</a>
+
+    </div>
+    <script>
+        var vm =new Vue({
+            el: "#app",
+            data: {},
+            methods :{
+                divHandler(){
+                    console.log("这是div方法");
+                },
+                btnHandler(){
+                    console.log("这是按钮方法");
+                },
+                baidu(){
+                    console.log("这是百度方法");
+                }
+
+            }
+        });
+    </script>
+</body>
+</html>
