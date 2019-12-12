@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../01lib/vue.js"></script>
+    <script src="../01lib/vue-resource-1.3.4.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="get请求" @Click="getInfo">
+        <input type="button" value="post请求" @Click="postInfo">
+    </div>
+    <script>
+        var vm=new Vue({
+            el: "#app",
+            data: {
+
+            },
+            methods: {
+                getInfo(){
+                        this.$http.get('http://localhost:9004/article').then(function(result){
+                            //通过result.body拿到服务器返回的成功的数据
+                            console.log(result.body)
+                        })
+                    },
+                postInfo(){
+                    this.$http.post("http://localhost:9004/article/search",{},{}).then(result =>{
+                        console.log(result);
+                    })
+                }
+
+            }
+        });
+    </script>
+</body>
+</html>
