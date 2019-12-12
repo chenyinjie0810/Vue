@@ -12,7 +12,8 @@
         <p>{{msg | msgFormat('宇宙','中的宇宙')| test}}</p>
     </div>
     <script>
-        Vue.filter('msgFormat', function(msg, arg, arg1){
+        Vue.filter(
+            'msgFormat', function(msg, arg, arg1){
             return msg.replace(/天下/g, arg+arg1)
         })
 
