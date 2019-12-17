@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../01lib/vue.js"></script>
+    <script src="../01lib/vue-resource-1.3.4.js"></script>
+    <link rel="stylesheet" href="../01lib/bootstrap.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">添加人员</h3>
+            </div>
+            <div class="panel-body form-inline">
+                <label>
+                    标题：
+                    <input type="text" class="form-control" v-model="title">
+                </label>
+                <label>
+                    内容:
+                    <input type="text" class="form-control" v-model="content" @keyup.enter="addArticle">
+                </label>
+                <input type="button" value="添加" class="btn btn-primary" @click="addArticle">
+                <h3>搜索关键字</h3>
+                <input type="text" class="form-control" v-model="keywords" v-color="'green'">
+            </div>
+        </div>
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>标题</th>
+                    <th>内容</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(article,i) in list" :key="article.id">
+                    <td>{{i+1}}</td>
+                    <td>{{article.title}}</td>
+                    <td>{{article.content}}</td>
+                    <td><a href="" @click.prevent="delArticle(article.id)">删除</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <script>
+        Vue.http.options.root="http://localhost:9004/";
+        // Vue.http.options.emulateJSON=true;
+        Vue.directive("color", {
+            bind: function (el, binding) {
+                el.style.color = binding.value;
+            }
+        })
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                keywords: "",
+                title: "",
+                content: "",
+                list: []
+            },
+            created() {
+                this.getAllList();
+            },
+            methods: {
+                //查询全部方法
+                getAllList() {
+                    this.$http.get("article").then(result => {
+                        var result = result.body;
+                        if (result.flag) {
+                            this.list = result.data;
+                            console.log(result);
+                        }
+                    })
+                },
+                //添加
+                addArticle() {
+                    this.$http.post("article", { title: this.title, content: this.content }, {}).then(result => {
+                        var result = result.body;
+                        if (result.flag) {
+                            this.getAllList();
+                            this.title = "";
+                            this.console = "";
+                        }
+                    })
+                },
+                // 删除
+                delArticle(id) {
+                    this.$http.delete("article/" + id, {}).then(result => {
+                        var result = result.body;
+                        if (result.flag) {
+                            this.getAllList();
+                        }else{
+                            alert(result.message);
+                        }
+                    })
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
